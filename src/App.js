@@ -1,113 +1,66 @@
 import React, { Component } from "react";
 import { Route, Link, Switch } from "react-router-dom";
 import "./App.css";
+import AddFood from "./AddFood/AddFood";
+import RecipeSearch from "./Recipes/RecipeSearch";
+import Home from "./Home/Home";
+import ApiContext from "./ApiContext";
 import config from "./config";
-import AddFood from "./AddFood/AddFood"
-
-
-// https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=76d6649b&app_key=2df24bd5834b69a0d31ef73b38d0632b
 
 class App extends Component {
   state = {
-    recipes: [],
-    query: "chicken, rice",
+    food: [],
   };
 
-  fetchData = () => {
-    fetch(`${config.REACT_APP_API_URL}?q=${this.state.query}`, {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "1496654bacmsha424417d7bdf872p173a8fjsn7e2e3473de2b",
-        "x-rapidapi-host": "edamam-recipe-search.p.rapidapi.com",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-  componentDidMount() {
-    this.fetchData();
-  }
+  currentFood = JSON.parse(localStorage.getItem("selectedFood")) || [];
 
-  recipeSearch = (e) => {
-    e.preventDefault()
-    var query = e.target.query.value
-    
-    fetch(`${config.REACT_APP_API_URL}?q=${query}`, {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "1496654bacmsha424417d7bdf872p173a8fjsn7e2e3473de2b",
-        "x-rapidapi-host": "edamam-recipe-search.p.rapidapi.com",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .then((data) => this.setState({
-        recipes: data
-      }))
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  // TODO: turn into fetch for food DB
+  // fetchData = () => {
+  //   fetch(`http://localhost:8000/api`, {
+  //     method: "GET",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       this.setState({
+  //         food: data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
- 
+  // componentDidMount() {
+  //   this.fetchData();
+
+  // }
+
   render() {
-    const currentFood = JSON.parse(localStorage.getItem('selectedFood'))
-   
+    const value = {
+      fetchData: this.fetchData,
+      recipeSearch: this.recipeSearch,
+      recipes: this.state.recipes,
+      query: this.state.query,
+      food: this.state.food,
+    };
 
-    const CurrentFoodFunc = ({currentFood}) => {
-      console.log(currentFood)
-     
-      if (currentFood ?? "There is no food") {
-        return ('None')
-      } else if (currentFood != null) {
-        return (
-          currentFood.map((item) => {
-            return (
-          <li>{item.selected} Date added: {item.date}</li>)
-          })
-        )
-    }
-  }
     return (
-      <div className="App">
-        <header className="App-header">
-          Frigo
-        </header>
-        <nav>
-          <ul>
-            <li>
-              <Link to ="/addFood">Add food</Link>
-            </li>
-          </ul>
-        </nav>
-        <div>
-        <Switch>
-              <Route exact path="/addFood" component={AddFood} />
-        </Switch>
-        </div>
-        <div>
-          Currently in your fridge:
-          <CurrentFoodFunc />
-          <ul>
-          {/* {this.state.showing ? <SelectedFoodDisplay /> : null} */}
-              {/* {currentFood.map((item) => {
-                return (
-                  <li>{item.selected} Date added: {item.date}</li>
-                )
-              })} */}
-          </ul>
-        </div>
-        <div>
-          <form onSubmit={(e) => this.recipeSearch(e)}>
-            <label htmlFor="query">Search for a recipe:</label>
-          <input type="text" id="query"className="recipeSearch"></input>
-          <button type="submit">Go</button>
-          </form>
-        </div>
-      </div>
+      <ApiContext.Provider value={value}>
+        <main>
+          <header className="App-header">
+            <Link to="/">Frigo</Link>
+          </header>
+          <nav className="app-nav">
+            <Link to="/addFood">Add food</Link>
+            <Link to="/recipes">Search for Recipes</Link>
+          </nav>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/addFood" component={AddFood} />
+            <Route exact path="/recipes" component={RecipeSearch} />
+          </Switch>
+        </main>
+      </ApiContext.Provider>
     );
   }
 }
