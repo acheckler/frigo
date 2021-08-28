@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import food from "../dummy-store";
 import ApiContext from "../ApiContext";
+import moment from "moment";
+
 
 class AddFood extends Component {
   static contextType = ApiContext;
- 
 
   constructor(props) {
     super(props);
@@ -12,18 +13,12 @@ class AddFood extends Component {
       searchTerm: "",
       checkedItems: [], //combination of current checked items & items previously added to 'fridge'
       currentlySelected: [], // keeps tracks of current checks, re-sets on page refresh & 'clear checks' function
+      //  foodList: JSON.parse(localStorage.getItem("fetchData")) || [],
       foodList: food.food,
       localStorage: JSON.parse(localStorage.getItem("selectedFood")) || [],
     };
     this.initialState = { ...this.state };
   }
-
-  state = {
-    searchTerm: "",
-    checkedItems: [],
-    currentlySelected: [],
-    foodList: food.food,
-  };
 
   componentDidMount() {
     const checkedFood = localStorage.getItem("selectedFood");
@@ -33,8 +28,12 @@ class AddFood extends Component {
     });
   }
 
+
+
+
   //food search
-  onchange = (e) => {
+  onChange = (e) => {
+    // const foodData = JSON.parse(localStorage.getItem("fetchData")) || []
     const searchTerm = e.target.value;
     const filteredFood = food.food.filter(
       (foodItem) =>
@@ -47,24 +46,24 @@ class AddFood extends Component {
   onCheck = (e) => {
     const name = e.target.name;
     const id = e.target.id;
-    const date = new Date().toLocaleString() + "";
+    const date = moment(new Date()).format("MM/DD/YY")
     const selected = { name, id, date };
-
 
     const isDuplicateChecked = this.state.checkedItems.some(
       (item) => item.name === selected.name
     );
     const isDuplicatedSelected = this.state.currentlySelected.some(
       (item) => item.name === selected.name
-    )
+    );
 
     if (isDuplicateChecked) {
       this.filterSelected(selected);
     } else if (isDuplicatedSelected) {
-      this.filterSelected(selected)
+      this.filterSelected(selected);
     } else {
       this.addSelected(selected);
     }
+
   };
 
   // adding to state when checkbox clicked, updates selectedFood state
@@ -85,7 +84,6 @@ class AddFood extends Component {
 
   //filter to check for duplicates
   filterSelected = (selected) => {
-    
     const newStateSelected = this.state.currentlySelected.filter(
       (item) => item.name !== selected.name
     );
@@ -94,10 +92,9 @@ class AddFood extends Component {
     );
     this.setState({
       checkedItems: newState,
-      currentlySelected: newStateSelected
+      currentlySelected: newStateSelected,
     });
   };
-
 
   // actual 'add to fridge' button event handler, updates local storage not state
   handleAddFood = () => {
@@ -105,25 +102,23 @@ class AddFood extends Component {
     if (selectedFood.length === 0) {
       window.alert("Oops! Please select items to add to fridge.");
     }
-    
     localStorage.setItem("selectedFood", JSON.stringify(selectedFood));
     this.props.history.push("/");
   };
 
-
   resetChecks = () => {
-    this.setState({ currentlySelected: this.initialState.currentlySelected });
+    this.setState({ currentlySelected: this.initialState.currentlySelected});
   };
 
-
   render() {
-    const { checkedItems, foodList, currentlySelected, localStorage } = this.state;
-   
-    //checking currentlySelected & local storage for a list to display what is currently checked
-    const displayList = localStorage.length ? (
-      foodList.filter((f) => !localStorage.find(({ name }) => f.name === name))
-    ) : foodList
+    const { foodList, currentlySelected, localStorage } = this.state;
 
+    //checking currentlySelected & local storage for a list to display what is currently checked
+    const displayList = localStorage.length
+      ? foodList.filter(
+          (f) => !localStorage.find(({ name }) => f.name === name)
+        )
+      : foodList;
 
     //checking checkedItems against foodList, filtering into a new array, then returns a boolean value
     const isChecked = (item) => {
@@ -132,19 +127,15 @@ class AddFood extends Component {
       });
       return !!items.length;
     };
-
-
+  
     return (
       <div className="add-food-page">
         <div className="food-array-list">
-          <input type="text" placeholder="search" onChange={this.onchange} />
+          <input type="text" placeholder="search" onChange={this.onChange} />
           <ul className="foodList">
             {displayList.map((item) => {
               return (
-                <div>
-                  
                   <li className="foodItem" key={item.name}>
-                    <label htmlFor={item.id}>
                       {item.name}
                       <input
                         type="checkbox"
@@ -154,10 +145,7 @@ class AddFood extends Component {
                         checked={isChecked(item)}
                         onChange={this.onCheck}
                       />
-                     
-                    </label>
                   </li>
-                </div>
               );
             })}
           </ul>
@@ -165,13 +153,10 @@ class AddFood extends Component {
         <div className="selected-food">
           <p>Filling Your Fridge with:</p>
           <ul>
-            {currentlySelected ? (
-              currentlySelected.map((selected) => {
+            {currentlySelected.length ? 
+            (currentlySelected.map((selected) => {
                 return <li key={selected.id}>{selected.name}</li>;
-              })
-            ) : (
-              <p>Nothing to add</p>
-            )}
+              })) : (<p>Nothing, yet! <br/> Select items and hit 'Add Food' to save them.</p>)}
           </ul>
           <button type="button" onClick={this.resetChecks}>
             Clear Checked Items
@@ -184,5 +169,7 @@ class AddFood extends Component {
     );
   }
 }
+
+AddFood.contextType = ApiContext;
 
 export default AddFood;

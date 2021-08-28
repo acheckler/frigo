@@ -20,8 +20,10 @@ function FridgeContents() {
             onClick={() => handleDelete(item.name)}
           >
             <img
-              src="/minus-square-regular.svg"
-              className="trash-icon"
+              src="/delete.png"
+              onMouseEnter={(e) => (e.currentTarget.src = "/delete2.png")}
+              onMouseLeave={(e) => (e.currentTarget.src = "/delete.png")}
+              id="trash-icon"
               alt="recipe"
             ></img>
           </button>
@@ -29,7 +31,7 @@ function FridgeContents() {
       );
     });
   } else {
-    return <p className="empty-fridge">Your fridge is empty, click 'Add Food' to get started!</p>;
+    return null
   }
 }
 

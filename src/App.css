@@ -1,45 +1,51 @@
-.App {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 
 .App-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /* font-size: calc(10px + 2vmin); */
   padding: 15px 0px 15px 0px;
   font-family: 'Poppins', sans-serif;
   color: #00417a;
   text-decoration: none;
 }
+.app-title {
+  font-size: calc(20px + 2vmin);
+  padding-bottom: 2vw;
+}
 
 a {
-  color:#00417a;
+  color: #023e8a;
   text-decoration: none;
 }
 
-.app-nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+a:hover {
+  transition: transform 430ms ease-in-out;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+  color: #0096c7;
 }
+
 
 .app-nav a {
-  padding: 5px;
   font-size: 20px;
+  border-style: solid;
+  border-width: 0.5px;
+  font-size: calc(5px + 2vmin);
+ 
 }
-
-.fridge-contents, .fridge-list {
+.f-link {
+  margin-right: 10px;
+}
+.home-page, .fridge-list {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
 }
+
 .fridge-list {
   border-style: solid;
   border-width: 2px;
@@ -47,21 +53,35 @@ a {
   padding: 10px 5px 10;
 }
 
+.home-p {
+  display: flex;
+  flex-direction: column;
+  padding-right: 5vw;
+  padding-left: 5vw;
+  justify-content: center;
+}
+
 .empty-fridge {
   border-style: none;
 }
+
 .food-li {
   padding: 5px 10px 5px;
 }
-h2 {
-  font-weight:400;
 
+h2 {
+  font-weight: 400;
+  padding-top: 1.5vw;
+  font-size: calc(10px + 2vmin);
 }
-.trash-icon {
-  width: 10px;
-  height: 10px;
+
+#trash-icon {
+  width: 17px;
+  height: 17px;
   padding-left: 10px;
 }
+
+
 #delete {
   border-style: none;
   background-color: white;
@@ -72,10 +92,25 @@ li {
   font-family: 'Open Sans', sans-serif;
 }
 
+ul {
+  padding-left: 0;
+}
+.home-li-middle {
+  margin-left: 40px;
+  margin-top: 5px;
+  list-style: square;
+}
+
+.home-li-beginning, .home-li-end {
+  padding: 15px 0px 15px;
+
+
+}
 
 /*ADD FOOD PAGE*/
+
 .add-food-page {
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 
@@ -83,10 +118,8 @@ li {
   align-self: flex-start;
 }
 
-
-
-
 /*RECIPE SEARCH PAGE */
+
 .active {
   color: red;
   box-shadow: 0 5px 7px -1px rgba(64, 202, 0, 0.23);
@@ -106,29 +139,29 @@ li {
 .hidden {
   display: none;
 }
- 
+
 .recipe-search {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .recipe-search-button {
   width: 50px;
- 
 }
 
 .ingredients-list {
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
   width: 75vw;
 }
+
 .inactive, .sfl-active {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 
 /* fonts: poppins, bodoni Moda,  */

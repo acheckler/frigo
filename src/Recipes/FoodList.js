@@ -7,7 +7,11 @@ class FoodList extends Component {
   };
 
   handleCheck = (itemName) => {
-    this.setState({ isActive: !this.state.isActive });
+      if (this.props.ingredients.length < 3 ) {
+        this.setState({ isActive: !this.state.isActive });
+    } else if (this.props.ingredients.length === 3 && this.props.ingredients.includes(itemName)) {
+        this.setState({ isActive: !this.state.isActive });
+    }
     this.state.selectedItems.push(itemName);
     this.props.select(itemName);
   };

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { Route, Link, Switch } from "react-router-dom";
 import "../App.css";
 import config from "../config";
 
@@ -17,13 +16,10 @@ class RecipeSearch extends Component {
 
   recipeFetch = (e) => {
     e.preventDefault();
-
     if(!this.state.ingredients.length) {
       alert('Whoops! Please select ingredients before searching')
     } 
-
     const query = this.state.ingredients.toString();
-
 
     fetch(`${config.REACT_APP_API_URL}?q=${query}`, {
       method: "GET",
@@ -34,7 +30,6 @@ class RecipeSearch extends Component {
     })
       .then((res) => res.json())
       .then((res) => {
-
         this.setState({
           fetchedRecipes: res.hits,
           displayRecipes: true,
@@ -48,7 +43,15 @@ class RecipeSearch extends Component {
 
   handleSelect = (selected) => {
     const ingredients = this.state.ingredients;
-    if (ingredients.includes(selected)) {
+  
+    if (ingredients.length === 3 && ingredients.includes(selected)) {
+      const ingredientsFilter = ingredients.filter((i) => i !== selected);
+      this.setState({
+        ingredients: ingredientsFilter,
+      });
+    } else if (ingredients.length === 3) {
+      alert("Can't select more than 3 items. Click an item again to unselect")
+    } else if (ingredients.includes(selected)) {
       const ingredientsFilter = ingredients.filter((i) => i !== selected);
       this.setState({
         ingredients: ingredientsFilter,
@@ -62,6 +65,8 @@ class RecipeSearch extends Component {
     }
   };
 
+
+
   displayRecipes = () => {
     if (this.state.fetchedRecipes.length) {
       return this.state.fetchedRecipes.map((item) => {
@@ -72,20 +77,25 @@ class RecipeSearch extends Component {
           </div>
         );
       });
-    } else {
-      return null
+    } 
+    else  {
+     return <p>Sorry, something went wrong. Try again, or try a different combination of items.</p>
     }
   };
-
+  componentDidMount(){
+    this.setState({ingredients: []})
+  }
   render() {
-    const { currentFood } = this.state;
+  
+    const { currentFood, ingredients} = this.state;
+
     const currentFoodMap = currentFood.map((item) => {
-      return <FoodList food={item} id={item.id} key={item.id} select={this.handleSelect} />;
+      return <FoodList food={item} id={item.id} key={item.id} select={this.handleSelect} ingredients={ingredients} />;
     });
 
     return (
       <div className="recipe-search">
-        <p>{currentFood ? "Add food to your fridge to search for recipes!" : "Select 1 - 3 items to use to search for recipes!"}</p>
+        <p>{currentFood.length ? "Select 1 - 3 items to use to search for recipes!" : "Add food to your fridge to search for recipes!"}</p>
         <form onSubmit={(e) => this.recipeFetch(e)}>
           <button 
           type="submit" 
@@ -100,7 +110,7 @@ class RecipeSearch extends Component {
             {currentFood.length ? currentFoodMap : ""}
           </ul>
         
-        {this.displayRecipes()}
+        {this.state.displayRecipes ? this.displayRecipes() : null}
       </div>
     );
   }

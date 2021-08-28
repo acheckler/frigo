@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import config from "../config";
+// import config from "../config";
 
 function RecipeSuggestions() {
-  const [results, setResults] = useState([]);
+//   const [results, setResults] = useState([]);
+const [results] = useState([]);
 
   const mapped = () => {
     return results.map((item) => {
