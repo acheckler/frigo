@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import food from "../dummy-store";
 import ApiContext from "../ApiContext";
 import moment from "moment";
 
@@ -13,8 +12,8 @@ class AddFood extends Component {
       searchTerm: "",
       checkedItems: [], //combination of current checked items & items previously added to 'fridge'
       currentlySelected: [], // keeps tracks of current checks, re-sets on page refresh & 'clear checks' function
-      //  foodList: JSON.parse(localStorage.getItem("fetchData")) || [],
-      foodList: food.food,
+       foodList: JSON.parse(localStorage.getItem("fetchData")) || [],
+
       localStorage: JSON.parse(localStorage.getItem("selectedFood")) || [],
     };
     this.initialState = { ...this.state };
@@ -33,9 +32,9 @@ class AddFood extends Component {
 
   //food search
   onChange = (e) => {
-    // const foodData = JSON.parse(localStorage.getItem("fetchData")) || []
+    const foodData = JSON.parse(localStorage.getItem("fetchData")) || []  //create a persisent data set to filter through
     const searchTerm = e.target.value;
-    const filteredFood = food.food.filter(
+    const filteredFood = foodData.filter(
       (foodItem) =>
         foodItem.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
     );
@@ -112,6 +111,7 @@ class AddFood extends Component {
 
   render() {
     const { foodList, currentlySelected, localStorage } = this.state;
+
 
     //checking currentlySelected & local storage for a list to display what is currently checked
     const displayList = localStorage.length

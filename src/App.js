@@ -5,41 +5,42 @@ import AddFood from "./AddFood/AddFood";
 import RecipeSearch from "./Recipes/RecipeSearch";
 import Home from "./Home/Home";
 import ApiContext from "./ApiContext";
-// import config from "./config";
+import config from "./config";
 
 class App extends Component {
   state = {
     food: [],
   };
+  
+
+ 
+  //fetch data from db
+  fetchData = () => {
+    const currentFood = JSON.parse(localStorage.getItem("fetchData")) || []
+    fetch(`${config.REACT_APP_DATABASE_URL}`, {
+       method: "GET",
+     })
+      .then((res) => res.json())
+      .then((data) => {
+        if(currentFood.length !== data.length) {
+          window.localStorage.setItem('fetchData', JSON.stringify(data));
+          this.setState({
+            food: data
+          })
+        }
+        this.setState({
+          food:data
+        }) 
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
 
 
-  // TODO: turn into fetch for food DB
-
-  // fetchData = () => {
-  //   const currentFood = JSON.parse(localStorage.getItem("fetchData")) || []
-  //   fetch(`https://thawing-cove-72278.herokuapp.com/api`, {
-  //      method: "GET",
-  //    })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if(currentFood.length !== data.length) {
-  //         window.localStorage.setItem('fetchData', JSON.stringify(data));
-  //         this.setState({
-  //           food: data
-  //         })
-  //       }
-  //       this.setState({
-  //         food:data
-  //       }) 
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  //   }
-
-  // componentDidMount() {
-  //   this.fetchData();
-  // }
+  componentDidMount() {
+    this.fetchData();
+  }
 
   render() {
     const value = {
