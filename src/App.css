@@ -19,7 +19,8 @@ li {
 
 h2 {
   font-weight: 400;
-  font-size: calc(10px + 2vmin);
+  /* font-size: calc(10px + 2vmin); */
+  font-size: 3vw;
 }
 
 ul {
@@ -37,7 +38,7 @@ ul {
 }
 
 .app-title {
-  font-size: 7vw;
+  font-size: 5vw;
   padding-bottom: 3vw;
   align-self: center;
   font-weight: 600;
@@ -57,8 +58,8 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
   display: flex;
   justify-content: center;
   font-weight: 500;
-  font-size: 3vw;
-  margin-bottom: 4vw;
+  font-size: 2.5vw;
+  margin-bottom: 1.5vh;
 }
 
 .f-link, .r-link {
@@ -103,11 +104,11 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 }
 
 #intro h2 {
-  font-size: 3vw;
+  font-size: 2.5vw;
 }
 
 #intro li {
-  font-size: 2.5vw;
+  font-size: 2vw;
 }
 
 .home-li-middle {
@@ -119,7 +120,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 }
 
 .home-p-top, .home-p-bottom {
-  font-size: 2.5vw;
+  font-size: 2vw;
   margin: 0.5em 1em 0.5em 1em;
 }
 
@@ -139,12 +140,23 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
   background-origin: border-box;
   background-clip: content-box, border-box;
 }
+#current-contents h2 {
+  font-size: 2.5vw;
+}
+.empty-fridge {
+  font-size: 2vw;
+  padding: 0.5em 0.8em 0em 0.8em;
+  margin: 0;
+  text-align: center;
+  position: relative;
+  top: 0.5em;
+}
 
 .li-div .svg-inline--fa.fa-w-14 {
   border-style: none;
   background-color: white;
-  height: 3vw;
-  width: 3vw;
+  height: 2vw;
+  width: 2vw;
   margin-left: 1em;
 }
 
@@ -161,7 +173,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 }
 
 .h-food-li {
-  font-size: 2.5vw;
+  font-size: 2vw;
   width: 20vw;
   border-style: solid;
   border-width: 0.1em;
@@ -190,7 +202,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 
 .af-selected-food {
   font-family: 'Roboto', sans-serif;
-  font-size: 2.8vw;
+  font-size: 2.5vw;
 }
 
 .af-selected-food button {
@@ -234,7 +246,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 }
 
 .af-li-header {
-  font-size: 4vw;
+  font-size: 3vw;
   border-bottom: 0.05em solid black;
   margin-bottom: 1em;
 }
@@ -252,7 +264,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 }
 
 .foodItem {
-  font-size: 3vw;
+  font-size: 2.5vw;
   margin-bottom: 5px;
 }
 
@@ -262,7 +274,7 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
   border-width: 0.15em;
   border-radius: 15px;
   border-style: solid;
-  font-size: 2.8vw;
+  font-size: 2.5vw;
   font-weight: 500;
   padding: 0.5em;
   border-color: #4361ee;
@@ -282,8 +294,8 @@ nav .svg-inline--fa.fa-w-14, .svg-inline--fa.fa-w-16 {
 
 input[type='checkbox'] {
   margin-left: 1.5vw;
-  width: 2vw;
-  height: 2vw;
+  width: 1.5vw;
+  height: 1.5vw;
 }
 
 @media only screen and (min-width: 1080px) {
@@ -305,7 +317,7 @@ input[type='checkbox'] {
 .active, .inactive {
   font-family: Roboto, sans-serif;
   font-weight: 300;
-  font-size: 3vw;
+  font-size: 2.5vw;
   border-radius: 0 0 6px 6px;
   box-shadow: 0 5px 7px -1px rgba(51, 51, 51, 0.23);
   letter-spacing: 0.06em;
@@ -338,7 +350,7 @@ input[type='checkbox'] {
 
 .recipe-search p {
   font-family: 'Roboto', sans-serif;
-  font-size: 3vw;
+  font-size: 2.5vw;
   letter-spacing: 0.04em;
 }
 
@@ -348,12 +360,13 @@ input[type='checkbox'] {
   border-style: solid;
   border-width: 0.15em;
   border-radius: 15px;
-  font-size: 4vw;
+  font-size: 3vw;
   font-weight: 500;
   padding: 0.2em 0.7em 0.2em 0.7em;
   border-color: #4361ee;
   color: #4361ee;
   margin-top: 1.5em;
+  margin-bottom: 0.5em;
 }
 
 .recipe-search-button:hover, .new-search-btn:hover {
@@ -363,6 +376,7 @@ input[type='checkbox'] {
   transform: scale(1.1);
   border-color: #4ea8de;
   color: #4ea8de;
+  margin-bottom: 0.5em;
 }
 
 .ingredients-list {
@@ -394,7 +408,7 @@ input[type='checkbox'] {
   flex-direction: column;
   align-self: center;
   color: black;
-  font-size: 4vw;
+  font-size: 3.5vw;
   letter-spacing: 0.05em;
   margin-left: 2em;
   margin-right: 1em;
@@ -405,7 +419,7 @@ input[type='checkbox'] {
 }
 
 .recipe-a-title {
-  font-size: 3vw;
+  font-size: 2.5vw;
   letter-spacing: 0.03em;
   margin-top: 1em;
 }
@@ -415,5 +429,5 @@ input[type='checkbox'] {
 }
 
 .recipe-img {
-  max-width: 30vw;
+  max-width: 20vw;
 }

@@ -1,7 +1,6 @@
-Frigo
-(Free-go)
+# Frigo (*free-goh*)
 
-https://frigo-food.vercel.app/
+[Live App](https://frigo-food.vercel.app)
 
 An application built to help reduce food waste by keeping track of what perishables are currently in the users fridge, and when they were purchased. A recipe search function is also included for users that need inspriation to use what they currently have.
 

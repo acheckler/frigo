@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 class AddFood extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -145,8 +144,6 @@ class AddFood extends Component {
   toggleListMi = () => {
     this.setState({ listOpenMi: !this.state.listOpenMi });
   };
-
-
 
   render() {
     const { foodList, currentlySelected, localStorage } = this.state;
@@ -290,7 +287,5 @@ class AddFood extends Component {
     );
   }
 }
-
-
 
 export default AddFood;

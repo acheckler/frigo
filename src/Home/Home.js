@@ -26,7 +26,9 @@ class Home extends Component {
         <p className="home-p-bottom">Wherever or however you use Frigo, make sure to use the same device everytime.</p>
         </div>
         <div id="current-contents">
-        <h2>{currentFood.length ? "Currently in your fridge:" : "Your fridge is empty, click 'Add Food' to get started!"}</h2>
+        {currentFood.length 
+        ? <h2>Currently in your fridge:</h2> 
+        : <h2 className="empty-fridge">Your fridge is empty.<br />"Click 'Add Food' to get started!</h2>}
         <ul className="fridge-list">
           <FridgeContents />
         </ul>
