@@ -21,6 +21,7 @@ class FoodList extends Component {
       <li
         onClick={() => this.handleCheck(this.props.food.name)}
         className={this.state.isActive ? "active" : "inactive"}
+        key={this.props.food.id}
       >
         {this.props.food.name}
       </li>

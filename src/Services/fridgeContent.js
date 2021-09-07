@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinusSquare } from "@fortawesome/free-regular-svg-icons";
 
 function FridgeContents() {
   const handleDelete = (name) => {
@@ -11,27 +13,27 @@ function FridgeContents() {
   if (currentFood.length) {
     return currentFood.map((item) => {
       return (
-        <li key={item.id} className="food-li">
-          {item.name} Date added: {item.date}
-          <button
-            type="button"
+        <div className="li-div" key={item.name + "-container"}>
+          <li key={item.id} className="h-food-li">
+            <span className="hf-li-name">{item.name}</span>
+            <br />
+            <span className="hf-li-date">Added: {item.date}</span>
+          </li>
+          <FontAwesomeIcon
+            icon={faMinusSquare}
             id="delete"
+            key={item.name + "-delete"}
             value={item}
+            role="delete-button"
             onClick={() => handleDelete(item.name)}
-          >
-            <img
-              src="/delete.png"
-              onMouseEnter={(e) => (e.currentTarget.src = "/delete2.png")}
-              onMouseLeave={(e) => (e.currentTarget.src = "/delete.png")}
-              id="trash-icon"
-              alt="recipe"
-            ></img>
-          </button>
-        </li>
+            onMouseEnter={(e) => (e.currentTarget.style.color = "red")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+          />
+        </div>
       );
     });
   } else {
-    return null
+    return null;
   }
 }
 

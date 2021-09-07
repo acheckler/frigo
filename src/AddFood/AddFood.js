@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import ApiContext from "../ApiContext";
 import moment from "moment";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 class AddFood extends Component {
-  static contextType = ApiContext;
 
   constructor(props) {
     super(props);
@@ -12,9 +11,13 @@ class AddFood extends Component {
       searchTerm: "",
       checkedItems: [], //combination of current checked items & items previously added to 'fridge'
       currentlySelected: [], // keeps tracks of current checks, re-sets on page refresh & 'clear checks' function
-       foodList: JSON.parse(localStorage.getItem("fetchData")) || [],
-
+      foodList: JSON.parse(localStorage.getItem("fetchData")) || [],
       localStorage: JSON.parse(localStorage.getItem("selectedFood")) || [],
+      listOpenF: false,
+      listOpenV: false,
+      listOpenMS: false,
+      listOpenD: false,
+      listOpenMi: false,
     };
     this.initialState = { ...this.state };
   }
@@ -27,25 +30,40 @@ class AddFood extends Component {
     });
   }
 
-
-
-
   //food search
   onChange = (e) => {
-    const foodData = JSON.parse(localStorage.getItem("fetchData")) || []  //create a persisent data set to filter through
+    this.setState({
+      listOpenF: true,
+      listOpenV: true,
+      listOpenMS: true,
+      listOpenD: true,
+      listOpenMi: true,
+    });
+
+    const foodData = JSON.parse(localStorage.getItem("fetchData")) || []; //create a persisent data set to filter through
     const searchTerm = e.target.value;
+    console.log(searchTerm);
     const filteredFood = foodData.filter(
       (foodItem) =>
         foodItem.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
     );
     this.setState({ foodList: filteredFood, searchTerm: searchTerm });
+    if (searchTerm === "") {
+      this.setState({
+        listOpenF: false,
+        listOpenV: false,
+        listOpenMS: false,
+        listOpenD: false,
+        listOpenMi: false,
+      });
+    }
   };
 
   //food checkbox
   onCheck = (e) => {
     const name = e.target.name;
     const id = e.target.id;
-    const date = moment(new Date()).format("MM/DD/YY")
+    const date = moment(new Date()).format("MM/DD/YY");
     const selected = { name, id, date };
 
     const isDuplicateChecked = this.state.checkedItems.some(
@@ -62,7 +80,6 @@ class AddFood extends Component {
     } else {
       this.addSelected(selected);
     }
-
   };
 
   // adding to state when checkbox clicked, updates selectedFood state
@@ -106,12 +123,33 @@ class AddFood extends Component {
   };
 
   resetChecks = () => {
-    this.setState({ currentlySelected: this.initialState.currentlySelected});
+    this.setState({ currentlySelected: this.initialState.currentlySelected });
   };
+
+  toggleListF = (list) => {
+    this.setState({ listOpenF: !this.state.listOpenF });
+  };
+
+  toggleListV = () => {
+    this.setState({ listOpenV: !this.state.listOpenV });
+  };
+
+  toggleListMS = () => {
+    this.setState({ listOpenMS: !this.state.listOpenMS });
+  };
+
+  toggleListD = () => {
+    this.setState({ listOpenD: !this.state.listOpenD });
+  };
+
+  toggleListMi = () => {
+    this.setState({ listOpenMi: !this.state.listOpenMi });
+  };
+
+
 
   render() {
     const { foodList, currentlySelected, localStorage } = this.state;
-
 
     //checking currentlySelected & local storage for a list to display what is currently checked
     const displayList = localStorage.length
@@ -127,36 +165,119 @@ class AddFood extends Component {
       });
       return !!items.length;
     };
-  
+
+    const listItem = (item) => {
+      return (
+        <li className="foodItem" key={item.name}>
+          {item.name}
+          <input
+            type="checkbox"
+            id={item.id}
+            aria-label={item.name}
+            name={item.name}
+            className="checkbox"
+            checked={isChecked(item)}
+            onChange={this.onCheck}
+          />
+        </li>
+      );
+    };
+
     return (
       <div className="add-food-page">
-        <div className="food-array-list">
-          <input type="text" placeholder="search" onChange={this.onChange} />
-          <ul className="foodList">
-            {displayList.map((item) => {
-              return (
-                  <li className="foodItem" key={item.name}>
-                      {item.name}
-                      <input
-                        type="checkbox"
-                        id={item.id}
-                        name={item.name}
-                        className="checkbox"
-                        checked={isChecked(item)}
-                        onChange={this.onCheck}
-                      />
-                  </li>
-              );
-            })}
+        <form htmlFor="add-food-form" className="af-selectable-lists">
+          <input
+            type="text"
+            aria-label="text-search"
+            placeholder="Search"
+            id="af-search-box"
+            onChange={this.onChange}
+          />
+          <ul className="af-foodList">
+            <li onClick={this.toggleListF} className="af-li-header">
+              Fruits{" "}
+              <FontAwesomeIcon
+                icon={this.state.listOpenF ? faChevronUp : faChevronDown}
+                className="af-chevron"
+                style={{ display: this.state.searchTerm ? "none" : "" }}
+              />
+            </li>
+            {this.state.listOpenF
+              ? displayList
+                  .filter((i) => i.category === "Fruits")
+                  .map((item) => listItem(item))
+              : ""}
+
+            <li onClick={this.toggleListV} className="af-li-header">
+              Vegetables{" "}
+              <FontAwesomeIcon
+                icon={this.state.listOpenV ? faChevronUp : faChevronDown}
+                className="af-chevron"
+                style={{ display: this.state.searchTerm ? "none" : "" }}
+              />{" "}
+            </li>
+            {this.state.listOpenV
+              ? displayList
+                  .filter((i) => i.category === "Vegetables")
+                  .map((item) => listItem(item))
+              : ""}
+
+            <li onClick={this.toggleListMS} className="af-li-header">
+              Meat/Seafood{" "}
+              <FontAwesomeIcon
+                icon={this.state.listOpenMS ? faChevronUp : faChevronDown}
+                className="af-chevron"
+                style={{ display: this.state.searchTerm ? "none" : "" }}
+              />
+            </li>
+            {this.state.listOpenMS
+              ? displayList
+                  .filter((i) => i.category === "Meat/Seafood")
+                  .map((item) => listItem(item))
+              : ""}
+
+            <li onClick={this.toggleListD} className="af-li-header">
+              Dairy{" "}
+              <FontAwesomeIcon
+                icon={this.state.listOpenD ? faChevronUp : faChevronDown}
+                className="af-chevron"
+                style={{ display: this.state.searchTerm ? "none" : "" }}
+              />
+            </li>
+            {this.state.listOpenD
+              ? displayList
+                  .filter((i) => i.category === "Dairy")
+                  .map((item) => listItem(item))
+              : ""}
+
+            <li onClick={this.toggleListMi} className="af-li-header">
+              Miscellaneous{" "}
+              <FontAwesomeIcon
+                icon={this.state.listOpenMi ? faChevronUp : faChevronDown}
+                className="af-chevron"
+                style={{ display: this.state.searchTerm ? "none" : "" }}
+              />
+            </li>
+            {this.state.listOpenMi
+              ? displayList
+                  .filter((i) => i.category === "Miscellaneous")
+                  .map((item) => listItem(item))
+              : ""}
           </ul>
-        </div>
-        <div className="selected-food">
-          <p>Filling Your Fridge with:</p>
+        </form>
+        <div className="af-selected-food">
+          <p>Filling Your Fridge with...</p>
           <ul>
-            {currentlySelected.length ? 
-            (currentlySelected.map((selected) => {
+            {currentlySelected.length ? (
+              currentlySelected.map((selected) => {
                 return <li key={selected.id}>{selected.name}</li>;
-              })) : (<p>Nothing, yet! <br/> Select items and hit 'Add Food' to save them.</p>)}
+              })
+            ) : (
+              <p>
+                Nothing, yet! <br /> Select items and hit 'Add Food' to save
+                them.
+              </p>
+            )}
           </ul>
           <button type="button" onClick={this.resetChecks}>
             Clear Checked Items
@@ -170,6 +291,6 @@ class AddFood extends Component {
   }
 }
 
-AddFood.contextType = ApiContext;
+
 
 export default AddFood;
